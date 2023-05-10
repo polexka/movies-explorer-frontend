@@ -1,0 +1,35 @@
+.more {
+  display: flex;
+  justify-content: center;
+  background-color: #FAFAFA;
+}
+
+.more__button {
+  padding: 0;
+  margin: 60px auto 80px;
+  width: 320px;
+  height: 36px;
+  border: 2px solid #E8E8E8;
+  border-radius: 6px;
+  background-color: #FAFAFA;
+}
+
+.more__button::after {
+  content: 'Ещё';
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+}
+
+@media all and (max-width: 768px) {
+  .more__button {
+    margin: 80px auto 80px;
+  }
+}
+
+@media all and (max-width: 420px)  {
+  .more__button {
+    width: 240px;
+  }
+}

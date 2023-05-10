@@ -1,0 +1,136 @@
+.search {
+  margin: 0 auto;
+  padding: 0 30px;
+  background-color: #FAFAFA;
+}
+
+.form {
+  max-width: 1140px;
+  margin: -74px auto 40px;
+  padding: 154px 0 0;
+}
+
+.form__search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1140px;
+}
+
+.form__input {
+  padding: 16px 20px;
+  margin-right: 10px;
+  flex-grow: 1;
+  height: 50px;
+  background-color: #F4F4F4;
+  border: none;
+  border-radius: 8px;
+}
+
+.form__button {
+  width: 44px;
+  height: 44px;
+  background-color: #3456F3;
+  background-image: url('../../images/search-button.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  border-radius: 5px;
+}
+
+.form__checkbox {
+  display: none;
+}
+
+.form__checkbox_switch {
+  margin-top: 28px;
+  position: relative;
+  width: 36px;
+  height: 20px;
+  background-color: #F4F4F4;
+  border-radius: 20px;
+  transition: 0.7s;
+  cursor: pointer;
+}
+
+.form__checkbox_switch::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 1px solid #FFF;
+  background-color: #EBEBEB;
+  transition: 0.7s;
+}
+
+.form__checkbox:checked~.form__checkbox_switch::before {
+  background-color: #2BE080;
+  left: 18px;
+}
+
+.form__checkbox:checked~.form__checkbox_switch {
+  background-color: #EBEBEB;
+}
+
+.form__label {
+  margin: 28px 0 0 12px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.search__underscore {
+  background-color: #E8E8E8;
+}
+
+@media all and (max-width: 768px) {
+  .form {
+    margin-bottom: 39px;
+    margin: -80px auto 40px;
+  }
+
+  .search__underscore {
+    max-width: 708px;
+  }
+
+  .form__input {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .form__checkbox_switch {
+    margin-top: 40px;
+  }
+
+  .form__label {
+    margin: 40px 0 0 12px;
+  }
+}
+
+@media all and (max-width: 420px) {
+  .search {
+    padding: 0 14px;
+  }
+
+  .form {
+    padding-top: 160px;
+  }
+
+  .form__search {
+    align-items: flex-start;
+  }
+
+  .form__input {
+    padding: 13px 13px 21px;
+  }
+
+  .form__label {
+    font-size: 11px;
+  }
+}

@@ -1,0 +1,50 @@
+.page {
+  margin: 0;
+  padding: 0;
+  color: black;
+  font-family: 'Inter', Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: auto;
+  min-height: 100vh;
+  background-color: #FAFAFA;
+}
+
+.link {
+  transition: opacity 0.5s;
+}
+
+.link:hover {
+  opacity: 0.6;
+}
+
+.button {
+  transition: opacity 0.5s;
+}
+
+.button:hover {
+  opacity: 0.7;
+}
+
+.section__header {
+  margin: 0 auto 22px;
+  max-width: 1140px;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+}
+
+.section__underscore {
+  margin: 0 auto;
+  height: 1px;
+  max-width: 1140px;
+  background-color: black;
+}
+
+@media all and (max-width: 768px) {
+  .section__underscore {
+    max-width: 668px;
+  }
+}

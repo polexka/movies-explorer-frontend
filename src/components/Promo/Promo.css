@@ -1,0 +1,44 @@
+.promo {
+  margin: -74px 0 0 0;
+  background-color: #DDDEE3;
+  background-image: url('../../images/landing.svg');
+  background-position: bottom 122px center;
+  background-repeat: no-repeat;
+  height: 598px;
+}
+
+.promo__line {
+  margin: auto;
+  padding-top: 258px;
+  max-width: 730px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  letter-spacing: -0.04em;
+}
+
+@media all and (max-width: 768px) {
+  .promo {
+    height: 858px;
+    background-position: bottom 240px center;
+  }
+
+  .promo__line {
+    padding-top: 400px;
+  }
+}
+
+@media all and (max-width: 420px) {
+  .promo {
+    height: 645px;
+    background-size: 77%;
+    background-position: bottom 182px center;
+  }
+
+  .promo__line {
+    padding-top: 282px;
+    font-size: 31px;
+    line-height: 39px;
+  }
+}
