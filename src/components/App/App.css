@@ -1,4 +1,4 @@
-.page {
+  .page {
   margin: 0;
   padding: 0;
   color: black;
@@ -25,26 +25,4 @@
 
 .button:hover {
   opacity: 0.7;
-}
-
-.section__header {
-  margin: 0 auto 22px;
-  max-width: 1140px;
-  font-weight: 400;
-  font-size: 22px;
-  line-height: 27px;
-  letter-spacing: -0.04em;
-}
-
-.section__underscore {
-  margin: 0 auto;
-  height: 1px;
-  max-width: 1140px;
-  background-color: black;
-}
-
-@media all and (max-width: 768px) {
-  .section__underscore {
-    max-width: 668px;
-  }
 }

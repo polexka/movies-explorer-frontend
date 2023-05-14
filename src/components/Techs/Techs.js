@@ -2,9 +2,9 @@ import './Techs.css';
 
 function Techs() {
   return (
-    <section className='techs'>
-      <h2 className='section__header'>Технологии</h2>
-      <div className='section__underscore' />
+    <section id='techs' className='techs'>
+      <h2 className='techs__header'>Технологии</h2>
+      <div className='techs__underscore' />
       <p className='techs__accent'>7 технологий</p>
       <p className='techs__text'>
         На курсе веб-разработки мы освоили технологии, которые применили в дипломном проекте.

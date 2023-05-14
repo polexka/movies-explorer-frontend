@@ -36,7 +36,7 @@ function Profile(props) {
             disabled={inputs.name}
           />
         </div>
-        <div className='section__underscore profile__underscore' />
+        <div className='profile__underscore' />
         <div className='profile__field'>
           <label className='profile__label'>
             E-mail

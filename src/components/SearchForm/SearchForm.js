@@ -4,19 +4,19 @@ function SearchForm() {
   return (
     <section className='search'>
       <form className='form'>
-        <label className='form__search'>
-          <input className='form__input' type="search" placeholder='Фильм' />
+        <div className='form__search'>
+          <input className='form__input' type="search" placeholder='Фильм' required />
           <button className='form__button' type="submit" />
-        </label>
+        </div>
         
         <label className='form__search'>
           <input type='checkbox' className='form__checkbox' />
-          <div className='form__checkbox_switch' />
-          <p className='form__label'>Короткометражки</p>
+          <span className='form__checkbox-switch' />
+          <span className='form__label'>Короткометражки</span>
         </label>
         
       </form>
-      <div className='section__underscore search__underscore' />
+      <div className='search__underscore' />
     </section>
   )
 }

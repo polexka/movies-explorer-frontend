@@ -12,6 +12,12 @@
   color: #A0A0A0;
 }
 
+.portfolio__links {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
 .portfolio__link {
   max-width: 1140px;
   margin: 29px auto 0;

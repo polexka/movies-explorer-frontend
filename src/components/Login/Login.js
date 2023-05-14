@@ -25,8 +25,8 @@ function Login(props) {
 
   return (
     <section className='login'>
-      <Link to='/' className='link header__link header__logo login__logo' />
-      <p className='greet_login'>Рады видеть!</p>
+      <Link to='/' className='link login__header-link login__logo' />
+      <p className='login__greet'>Рады видеть!</p>
 
       <form
         className='login__form'

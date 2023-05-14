@@ -38,9 +38,9 @@ function Navigation() {
                   <p className='navigation__menu'>Сохранённые фильмы</p>
                 </Link>
                 <Link to='/profile' className='link navigation__link'>
-                  <div className='navigation__profile navigation__profile_menu'>
+                  <div className='navigation__profile-menu'>
                     <p className='navigation__menu navigation__menu_profile'>Аккаунт</p>
-                    <img className='navigation__profile_image' src={avatar} alt='avatar' />
+                    <img className='navigation__profile navigation__profile_image' src={avatar} alt='avatar' />
                   </div>
                 </Link>
 
@@ -58,7 +58,7 @@ function Navigation() {
               <Link to='/profile' className='link navigation__link'>
                 <div className='navigation__profile'>
                   <h2 className='navigation__text navigation__text_profile navigation__text_accent'>Аккаунт</h2>
-                  <img className='navigation__profile_image' src={avatar} alt='avatar' />
+                  <img className='navigation__profile-image' src={avatar} alt='avatar' />
                 </div>
               </Link>
             </div>

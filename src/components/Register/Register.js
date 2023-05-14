@@ -29,69 +29,69 @@ function Register(props) {
   }
 
   return (
-    <section className='login'>
-      <Link to='/' className='link header__link header__logo login__logo' />
-      <p className='greet_login'>Добро пожаловать!</p>
+    <section className='register'>
+      <Link to='/' className='link register__header-link register__logo' />
+      <p className='register__greet'>Добро пожаловать!</p>
 
       <form
-        className='login__form'
+        className='register__form'
         onSubmit={handleSubmit}>
-        <label className='login__label'>
+        <label className='register__label'>
           Имя
         </label>
         <input
-          className={validity.values.name ? 'login__input' : 'login__input login__input_error'}
-          type='name'
+          className={validity.values.name ? 'register__input' : 'register__input register__input_error'}
+          type='text'
           name="name"
           value={form.values.name}
           onChange={handleChange}
           required minLength="2" maxLength="40"
         />
-        <span className="login__span">
+        <span className="register__span">
           {validity.values.name === Boolean(form.values.name) ? '' : 'Имя должно быть от 2 до 40 символов'}
         </span>
 
-        <label className='login__label'>
+        <label className='register__label'>
           E-mail
         </label>
         <input
-          className={validity.values.email ? 'login__input' : 'login__input login__input_error'}
+          className={validity.values.email ? 'register__input' : 'register__input register__input_error'}
           type='email'
           name="email"
           value={form.values.email}
           onChange={handleChange}
           required minLength="2" maxLength="40"
         />
-        <span className="login__span">
+        <span className="register__span">
           {validity.values.email === Boolean(form.values.email) ? '' : 'Введите email'}
         </span>
 
-        <label className='login__label'>
+        <label className='register__label'>
           Пароль
         </label>
         <input
-          className={validity.values.password ? 'login__input' : 'login__input login__input_error'}
+          className={validity.values.password ? 'register__input' : 'register__input register__input_error'}
           type="password"
           name="password"
           value={form.values.password}
           onChange={handleChange}
           required minLength="8" maxLength="40"
         />
-        <span className="login__span">
+        <span className="register__span">
           {validity.values.password === Boolean(form.values.password) ? '' : 'Пароль должен быть от 8 до 40 символов'}
         </span>
 
 
         <button
-          className='login__button register__button'
+          className='register__button'
           type='button'
         >
           Зарегистрироваться
         </button>
 
-        <p className='login__text'>
+        <p className='register__text'>
           Уже зарегистрированы?
-          <Link className='login__link' to='/signin'>Войти</Link>
+          <Link className='register__link' to='/signin'>Войти</Link>
         </p>
       </form>
 

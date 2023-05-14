@@ -31,7 +31,7 @@
   align-items: center;
 }
 
-.navigation__profile_image {
+.navigation__profile-image {
   margin-left: 17px;
 }
 
@@ -61,7 +61,10 @@
   text-align: center;
 }
 
-.navigation__profile_menu {
+.navigation__profile-menu {
+  margin-left: 50px;
+  display: flex;
+  align-items: center;
   position: absolute;
   bottom: 92px;
   right: 210px;
@@ -146,7 +149,7 @@
     margin: 0;
   }
 
-  .navigation__profile_menu {
+  .navigation__profile-menu {
     bottom: 48px;
     right: 110px;
   }

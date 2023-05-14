@@ -51,6 +51,8 @@
   margin: 16px 0 17px;
   background-color: #E8E8E8;
   width: 100%;
+  height: 1px;
+  max-width: 1140px;
 }
 
 .profile__button {
@@ -91,6 +93,10 @@
 
   .profile__button_exit {
     margin: 0 0 70px;
+  }
+
+  .profile__underscore {
+    max-width: 668px;
   }
 }
 

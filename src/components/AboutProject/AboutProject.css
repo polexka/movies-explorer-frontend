@@ -4,6 +4,13 @@
   background-color: #FAFAFA;
 }
 
+.about__underscore {
+  margin: 0 auto;
+  height: 1px;
+  max-width: 1140px;
+  background-color: black;
+}
+
 .about__paragraphs {
   margin: 70px auto 110px;
   max-width: 1140px;
@@ -15,14 +22,14 @@
   max-width: 550px;
 }
 
-.about__paragraph__header {
+.about__paragraph-header {
   margin: 0 0 26px;
   font-weight: 400;
   font-size: 20px;
   letter-spacing: -0.04em;
 }
 
-.about__paragraph__text {
+.about__paragraph-text {
   margin: 0;
   font-weight: 400;
   font-size: 14px;
@@ -45,7 +52,7 @@
   max-width: 912px;
 }
 
-.about__calendar__header {
+.about__calendar-header {
   margin: 0;
   padding: 11px 0;
   font-weight: 400;
@@ -53,16 +60,16 @@
   text-align: center;
 }
 
-.about__calendar__header_blue {
+.about__calendar-header_blue {
   background-color: #3456F3;
   color: white;
 }
 
-.about__calendar__header_gray {
+.about__calendar-header_gray {
   background-color: #F2F2F2;
 }
 
-.about__calendar__text {
+.about__calendar-text {
   margin: 0;
   padding-top: 14px;
   font-weight: 500;
@@ -76,6 +83,10 @@
     padding: 91px 50px 0;
   }
 
+  .about__underscore {
+    max-width: 668px;
+  }
+
   .about__paragraphs {
     margin-top: 71px;
     margin-bottom: 93px;
@@ -85,11 +96,11 @@
     max-width: 319px;
   }
 
-  .about__paragraph__header {
+  .about__paragraph-header {
     margin-bottom: 23px;
   }
 
-  .about__paragraph__text {
+  .about__paragraph-text {
     font-size: 12px;
     line-height: 18px;
   }
@@ -98,7 +109,7 @@
     max-width: 140px;
   }
 
-  .about__calendar__header {
+  .about__calendar-header {
     padding: 10px 0;
   }
 }
@@ -114,19 +125,19 @@
     flex-direction: column;
   }
 
-  .about__paragraph__header {
+  .about__paragraph-header {
     margin-bottom: 15px;
     font-size: 18px;
     line-height: 22px;
   }
 
-  .about__paragraph__text {
+  .about__paragraph-text {
     margin-bottom: 57px;
     font-size: 11px;
     line-height: 16px;
   }
 
-  .about__calendar__header {
+  .about__calendar-header {
     padding: 11px 0;
     font-size: 11px;
     line-height: 13px;
@@ -136,7 +147,7 @@
     max-width: 100px;
   }
 
-  .about__calendar__text {
+  .about__calendar-text {
     padding-top: 10px;
     font-size: 11px;
     line-height: 13px;
@@ -147,9 +158,12 @@
     flex-direction: row;
   }
 
-  .section__header {
+  .about__header {
     margin: 0 auto 27px;
     font-size: 18px;
     line-height: 22px;
+    max-width: 1140px;
+    font-weight: 400;
+    letter-spacing: -0.04em;
   }
 }

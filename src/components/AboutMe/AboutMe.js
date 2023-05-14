@@ -3,9 +3,9 @@ import avatar from '../../images/avatar.png';
 
 function AboutMe() {
   return (
-    <section className='student'>
-      <h2 className='section__header'>Студент</h2>
-      <div className='section__underscore' />
+    <section id='student' className='student'>
+      <h2 className='student__header'>Студент</h2>
+      <div className='student__underscore' />
       <div className='student__profile'>
         <div className='student__info'>
           <p className='student__name'>Полина</p>
@@ -15,7 +15,11 @@ function AboutMe() {
             Люблю рисовать. Увлекаюсь программированием ещё со школьных лет.
             После обучения в Практикуме хочу продолжать развиваться как Веб&#8209;разработчик.
           </p>
-          <a className='link student__link' href='https://github.com/polexka'>Github</a>
+          <a
+            className='link student__link'
+            href='https://github.com/polexka'
+            target="_blank"
+          >Github</a>
         </div>
         <img className='student__photo' src={avatar} alt='Фото студента' />
       </div>
