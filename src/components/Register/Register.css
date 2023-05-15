@@ -1,0 +1,140 @@
+.register {
+  margin: 0 auto;
+  max-width: 396px;
+}
+
+.register__greet {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 0 0 40px;
+}
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register__label {
+  padding: 0;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #A0A0A0;
+}
+
+.register__input {
+  margin: 5px 0 0;
+  padding: 0 0 10px;
+  border: none;
+  border-bottom: 1px solid #E8E8E8;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+  outline: none;
+  background-color: transparent;
+}
+
+.register__input:focus {
+  border-bottom: 1px solid #3456F3;
+}
+
+.register__input_error {
+  color: #EE3465;
+}
+
+.register__input_error:focus {
+  border-bottom: 1px solid #EE3465;
+}
+
+.register__span {
+  margin: 0 0 6px;
+  padding-top: 6px;
+  height: 12px;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #EE3465;
+}
+
+.register__span:last-of-type {
+  margin-bottom: 36px;
+}
+
+.register__button {
+  margin-top: 98px;
+  padding: 13px 0 15px;
+  color: #FFFFFF;
+  border: none;
+  background-color: #3456F3;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.register__text {
+  margin: 16px auto;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #A0A0A0;
+}
+
+.register__link {
+  margin-left: 6px;
+  text-decoration: none;
+  color: #3456F3;
+}
+
+.register__header-link {
+  margin: 0;
+  padding: 0;
+  display: block;
+  text-decoration: none;
+  color: black;
+}
+
+.register__logo {
+  margin: 70px 0 40px;
+  width: 38px;
+  height: 38px;
+  background-image: url('../../images/logo.svg');
+}
+
+
+@media all and (max-width: 768px) {
+  .register__logo {
+    margin: 232px 0 40px;
+  }
+}
+
+@media all and (max-width: 420px) {
+  .register__form {
+    padding: 0 30px;
+  }
+
+  .register__logo {
+    margin: 56px auto 50px;
+  }
+
+  .greet_register {
+    text-align: center;
+    margin: 0 0 80px;
+  }
+
+  .register__button {
+    margin-top: 186px;
+    font-size: 12px;
+    line-height: 15px;
+    padding: 15px 0;
+  }
+
+  .register__text {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

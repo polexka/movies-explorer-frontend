@@ -1,0 +1,169 @@
+.about {
+  margin: 0;
+  padding: 113px 30px 110px;
+  background-color: #FAFAFA;
+}
+
+.about__underscore {
+  margin: 0 auto;
+  height: 1px;
+  max-width: 1140px;
+  background-color: black;
+}
+
+.about__paragraphs {
+  margin: 70px auto 110px;
+  max-width: 1140px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.about__paragraph {
+  max-width: 550px;
+}
+
+.about__paragraph-header {
+  margin: 0 0 26px;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+}
+
+.about__paragraph-text {
+  margin: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.about__paragraphs_calendar {
+  margin: 0 auto;
+}
+
+.about__calendar {
+  width: 100%;
+}
+
+.about__calendar_blue {
+  max-width: 228px;
+}
+
+.about__calendar_gray {
+  max-width: 912px;
+}
+
+.about__calendar-header {
+  margin: 0;
+  padding: 11px 0;
+  font-weight: 400;
+  font-size: 14px;
+  text-align: center;
+}
+
+.about__calendar-header_blue {
+  background-color: #3456F3;
+  color: white;
+}
+
+.about__calendar-header_gray {
+  background-color: #F2F2F2;
+}
+
+.about__calendar-text {
+  margin: 0;
+  padding-top: 14px;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  color: #A0A0A0;
+}
+
+@media all and (max-width: 768px) {
+  .about {
+    padding: 91px 50px 0;
+  }
+
+  .about__underscore {
+    max-width: 668px;
+  }
+
+  .about__paragraphs {
+    margin-top: 71px;
+    margin-bottom: 93px;
+  }
+
+  .about__paragraph {
+    max-width: 319px;
+  }
+
+  .about__paragraph-header {
+    margin-bottom: 23px;
+  }
+
+  .about__paragraph-text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about__calendar_blue {
+    max-width: 140px;
+  }
+
+  .about__calendar-header {
+    padding: 10px 0;
+  }
+}
+
+@media all and (max-width: 420px) {
+  .about {
+    padding: 72px 18px 110px;
+  }
+
+  .about__paragraphs {
+    margin-top: 61px;
+    margin-bottom: 3px;
+    flex-direction: column;
+  }
+
+  .about__paragraph-header {
+    margin-bottom: 15px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .about__paragraph-text {
+    margin-bottom: 57px;
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about__calendar-header {
+    padding: 11px 0;
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .about__calendar_blue {
+    max-width: 100px;
+  }
+
+  .about__calendar-text {
+    padding-top: 10px;
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .about__paragraphs_calendar {
+    margin: 0 auto;
+    flex-direction: row;
+  }
+
+  .about__header {
+    margin: 0 auto 27px;
+    font-size: 18px;
+    line-height: 22px;
+    max-width: 1140px;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+  }
+}

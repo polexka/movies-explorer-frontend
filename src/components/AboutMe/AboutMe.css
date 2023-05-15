@@ -1,0 +1,138 @@
+.student {
+  margin: 0;
+  padding: 112px 30px 100px;
+  background-color: #FAFAFA;
+}
+
+.student__header {
+  margin: 0 auto 22px;
+  max-width: 1140px;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+}
+
+.student__underscore {
+  margin: 0 auto;
+  height: 1px;
+  max-width: 1140px;
+  background-color: black;
+}
+
+.student__profile {
+  margin: 66px auto 0;
+  max-width: 1140px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.student__info {
+  position: relative;
+}
+
+.student__name {
+  margin: 0 auto;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  letter-spacing: -0.04em;
+}
+
+.student__job {
+  margin: 18px auto 0;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.student__about {
+  margin: 26px 0 0;
+  max-width: 600px;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.student__link {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  font-weight: 500;
+  font-size: 14px;
+  color: black;
+  text-decoration: none;
+}
+
+@media all and (max-width: 768px) {
+  .student {
+    padding: 92px 30px 91px;
+  }
+
+  .student__name {
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  .student__profile {
+    max-width: 668px;
+  }
+
+  .student__job {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .student__about {
+    margin-bottom: 87px;
+    font-size: 12px;
+    line-height: 18px;
+    max-width: 364px;
+  }
+
+  .student__photo {
+    margin-left: 20px;
+    width: 254px;
+    height: 307px;
+  }
+
+  .student__link {
+    position: relative;
+  }
+
+  .student__underscore {
+    max-width: 668px;
+  }
+}
+
+@media (max-width: 460px) {
+  .student {
+    padding: 110px 14px 127px;
+  }
+
+  .student__profile {
+    margin: 60px auto 0;
+    flex-direction: column-reverse;
+  }
+
+  .student__photo {
+    margin: 0 auto;
+    height: 352px;
+    width: 293px;
+  }
+
+  .student__name {
+    margin-top: 38px;
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .student__about {
+    margin: 20px 0 0;
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .student__link {
+    position: relative;
+    top: 57px;
+  }
+}

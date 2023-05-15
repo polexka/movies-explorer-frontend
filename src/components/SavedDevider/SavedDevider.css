@@ -1,0 +1,11 @@
+.devider {
+  padding-top: 90px;
+  height: 140px;
+  background-color: #FAFAFA;
+}
+
+@media all and (max-width: 420px) {
+  .devider {
+    padding-top: 30px;
+  }
+}
