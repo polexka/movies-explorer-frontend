@@ -5,7 +5,7 @@ function Portfolio() {
     <div className='portfolio'>
       <p className='portfolio__header'>Портфолио</p>
       <ul className='portfolio__links'>
-        <li>
+        <li className='portfolio__li'>
           <a
             className='link portfolio__link'
             href='https://github.com/polexka/how-to-learn'
@@ -14,9 +14,10 @@ function Portfolio() {
             <p className='portfolio__name'>Статичный сайт</p>
             <p className='portfolio__name'>↗</p>
           </a>
+          <div className='portfolio__underscore' />
         </li>
 
-        <li>
+        <li className='portfolio__li'>
           <a
             className='link portfolio__link'
             href='https://github.com/polexka/russian-travel'
@@ -25,9 +26,10 @@ function Portfolio() {
             <p className='portfolio__name'>Адаптивный сайт</p>
             <p className='portfolio__name'>↗</p>
           </a>
+          <div className='portfolio__underscore' />
         </li>
 
-        <li>
+        <li className='portfolio__li'>
           <a
             className='link portfolio__link'
             href='https://github.com/polexka/react-mesto-api-full'

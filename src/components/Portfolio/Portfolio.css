@@ -25,11 +25,14 @@
   justify-content: space-between;
   text-decoration: none;
   color: black;
-  border-bottom: 1px solid #E8E8E8;
 }
 
-.portfolio__link:last-child {
-  border: none;
+.portfolio__underscore {
+  padding: 0;
+  margin: 0 auto;
+  height: 1px;
+  max-width: 1140px;
+  border-bottom: 1px solid #E8E8E8;
 }
 
 .portfolio__name {
