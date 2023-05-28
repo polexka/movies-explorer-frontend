@@ -16,20 +16,26 @@
   justify-content: center;
 }
 
-@media all and (max-width: 768px) {
+.cards__empty {
+  text-align: center;
+  color: #A0A0A0;
+  margin: 0;
+  padding: 79px 0;
+}
+
+@media all and (max-width: 1200px) {
   .cards {
     padding: 0;
   }
 
   .cards__list {
     grid-template-columns: repeat(auto-fill, 342px);
-    gap: 35px 23px;
+    gap: 25px 10px;
   }
 }
 
 @media all and (max-width: 420px) {
   .cards__list {
-    grid-template-columns: repeat(auto-fill, 300px);
     gap: 16px 10px;
     padding: 49px 0 0;
   }

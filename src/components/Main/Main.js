@@ -8,33 +8,64 @@ import Techs from "../Techs/Techs";
 import Portfolio from '../Portfolio/Portfolio';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import cards from '../../utils/mock';
-import More from '../More/More';
 import SavedDevider from '../SavedDevider/SavedDevider';
-import saved from '../../utils/mockSaved';
+import Preloader from '../Preloader/Preloader';
 
-function Main() {
+function Main({
+  initials,
+  initialSaved,
+  isEnd,
+  handleSave,
+  cardsLoading,
+  loadMore,
+  handleCheckbox,
+  handleSearchMovie
+}) {
+
   return (
     <main className="main">
       <Switch>
         <Route path='/movies'>
-          <SearchForm />
-          <MoviesCardList
-            cards={cards} 
-            saved={false}
-            key='movies' 
-            />
-          <More />
+          <SearchForm
+            handleCheckbox={handleCheckbox}
+            handleSearchMovie={handleSearchMovie}
+            // key='movies-search'
+          />
+          {
+            cardsLoading ?
+              <Preloader />
+              :
+              <MoviesCardList
+                cards={initials}
+                handleSave={handleSave}
+                savedPage={false}
+                isEnd={isEnd}
+                loadMore={loadMore}
+                key='movies'
+              />
+          }
         </Route>
 
         <Route path='/saved-movies'>
-          <SearchForm />
-          <MoviesCardList
-            cards={saved}
-            saved={true}
-            key='saved-movies'
+          <SearchForm
+            handleCheckbox={handleCheckbox}
+            handleSearchMovie={handleSearchMovie}
+            // key='saved-movies-search'
           />
-          <SavedDevider />
+          {
+            cardsLoading ?
+              <Preloader />
+              :
+              <>
+                <MoviesCardList
+                  cards={initialSaved}
+                  handleSave={handleSave}
+                  savedPage={true}
+                  key='saved-movies'
+                />
+                <SavedDevider />
+              </>
+          }
         </Route>
 
         <Route path='/'>

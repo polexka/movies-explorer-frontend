@@ -8,7 +8,7 @@ function Navigation() {
 
   const isTablet = useMediaQuery({
     query: "(max-width: 786px)",
-  })
+  });
 
   const [menu, setStatus] = useState(false);
 

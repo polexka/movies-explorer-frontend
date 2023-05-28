@@ -1,50 +1,63 @@
-import { useState } from 'react';
 import './MoviesCard.css';
+import { useEffect, useState } from 'react';
+import { getNoun } from '../../utils/constants';
 
-function MoviesCard(props) {
-  const buttonClass = props.savedPage ? 'button movie__button movie__button_delete' : 'button movie__button';
+function MoviesCard({
+  card,
+  handleSave,
+  savedPage,
+  name,
+  duration,
+  imageUrl,
+  trailerLink,
+  saved
+}) {
+  const buttonClass = savedPage ?
+    'button movie__button movie__button_delete' :
+    saved ? 'button movie__button movie__button_saved' : 'button movie__button';
 
   const [button, toggleButton] = useState(buttonClass);
 
-  function toggle() {
-    if (button === 'button movie__button') {
-      toggleButton('button movie__button movie__button_saved');
-      if (props.savedPage) {
-        toggleButton(buttonClass);
-      }
-    } else {
-      toggleButton('button movie__button');
-    }
-  }
+  useEffect(() => {
+    const newClass = savedPage ?
+      'button movie__button movie__button_delete' :
+      saved ? 'button movie__button movie__button_saved' : 'button movie__button';
+    toggleButton(newClass);
 
-  function getNoun(number, word) {
-    let n = number % 100;
-    if (n >= 5 && n <= 20) {
-      return word[2];
-    }
-    n %= 10;
-    if (n === 1) {
-      return word[0];
-    }
-    if (n >= 2 && n <= 4) {
-      return word[1];
-    }
-    return word[2]
-  }
+  }, [saved, savedPage]);
 
+  function saveCard() {
+    handleSave(card);
+  }
 
   return (
     <li className='movie'>
-      <p className='movie__name'>{props.name}</p>
-      <p className='movie__duration'>
-        {props.duration + ' ' + getNoun(props.duration, ['минута', 'минуты', 'минут'])}
+      <p className='movie__name'>
+        <a
+          rel="noreferrer"
+          href={trailerLink}
+          target='_blank'
+          className='movie__link'
+        >
+          {name}
+        </a>
       </p>
-      <div className='movie__preview' />
+      <p className='movie__duration'>
+        {duration + ' ' + getNoun(duration, ['минута', 'минуты', 'минут'])}
+      </p>
+      <a
+        rel="noreferrer"
+        href={trailerLink}
+        target='_blank'
+        className='movie__link'
+      >
+        <img className='movie__preview' src={imageUrl} alt={name} />
+      </a>
       <button
         className={button}
         type='button'
         aria-label='Сохранить'
-        onClick={toggle}
+        onClick={saveCard}
       />
     </li>
   )

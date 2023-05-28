@@ -1,59 +1,109 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import './Profile.css';
 import useForm from '../../hooks/useForm';
+import { CurrentAuthContext } from '../../contexts/CurrentAuthContext';
+import useValidation from '../../hooks/useValidation';
 
-function Profile(props) {
-  const form = useForm({name: props.name, email: props.email});
-  const [inputs, setInputs] = useState({name: true, email: true});
+function Profile({ patchUser, signOut }) {
+  const currentUser = useContext(CurrentAuthContext);
+
+  const form = useForm({
+    name: currentUser.name,
+    email: currentUser.email
+  });
+
+  const validity = useValidation({
+    name: true,
+    email: true
+  });
+
+  const [edit, setEdit] = useState(false);
 
   function handleChange(e) {
     form.handleChange(e);
+    validity.handleChange(e);
   }
 
-  function handleClick() {
-    if (!inputs.name) {
-      //тут сохраняются данные, валидируются и отправляются ( тк нажата кнопка сохранить )
-      props.setUser(form.values);
-    }
+  function handleSubmit(e) {
+    e.preventDefault();
+    patchUser(form.values);
+    setEdit(false);
+  }
 
-    setInputs({name: !inputs.name, email: !inputs.email});
+  function handleClick(e) {
+    e.preventDefault();
+    setEdit(true);
+  }
+
+  function handleSignOut(e) {
+    e.preventDefault();
+    signOut();
   }
 
   return (
     <section className='profile'>
-      <p className='profile__name'>Привет, {props.name}!</p>
+      <p className='profile__name'>Привет, {currentUser.name}!</p>
 
-      <form className='profile__form'>
+      <form className='profile__form' onSubmit={handleSubmit}>
         <div className='profile__field'>
           <label className='profile__label'>
             Имя
           </label>
           <input
-            className='profile__input'
+            className={validity.values.name ? 'profile__input' : 'profile__input profile__input_error'}
             value={form.values.name}
             name='name'
             onChange={handleChange}
-            disabled={inputs.name}
+            disabled={!edit}
           />
         </div>
+        <span className='profile__span'>
+          {validity.values.name ? '' : 'Введите имя'}
+        </span>
         <div className='profile__underscore' />
         <div className='profile__field'>
           <label className='profile__label'>
             E-mail
           </label>
           <input
-            className='profile__input'
+            className={validity.values.email ? 'profile__input' : 'profile__input profile__input_error'}
             value={form.values.email}
             name='email'
             onChange={handleChange}
-            disabled={inputs.email}
+            disabled={!edit}
           />
         </div>
+        <span className='profile__span'>
+          {validity.values.email ? '' : 'Введите email'}
+        </span>
 
-        <button className='button profile__button' type='button' onClick={handleClick}>
-          {inputs.name ? 'Редактировать' : 'Сохранить'}
-        </button>
-        <button className='button profile__button profile__button_exit' type='button'>
+        {
+          edit ?
+            (
+              <button
+                className='button profile__button'
+                type='submit'
+                disabled={(validity.values.email && validity.values.name) ? false : true}
+              >
+                Сохранить
+              </button>
+            ) :
+            (
+              <button
+                className='button profile__button'
+                type='button'
+                onClick={handleClick}
+              >
+                Редактировать
+              </button>
+            )
+        }
+
+        <button
+          className='button profile__button profile__button_exit'
+          type='button'
+          onClick={handleSignOut}
+        >
           Выйти из аккаунта
         </button>
       </form>
