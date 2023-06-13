@@ -65,7 +65,7 @@ function App() {
   const cardsRef = useRef([]);
 
   const [initialCards, setInitialCards] = useState([]);
-  const [initialSaved, setInitialSaved] = useState([]);
+  const [savedMovies, setSaved] = useState([]);
   const initialsRef = useRef([]);
 
   const [endOfList, setEnd] = useState(false);
@@ -182,10 +182,6 @@ function App() {
       cardsList = Search(cardsList, searchStr);
     }
 
-    setInitialSaved(
-      cardsList.filter(movie => (movie.saved === true))
-    );
-
     if (isMobile) {
       setInitialCards(cardsList.slice(0, 5));
     } else if (isTablet) {
@@ -232,14 +228,14 @@ function App() {
           //удаляем фильм
           setCards((state) => changeCardStatus(state, newMovie, false));
           setInitialCards((state) => changeCardStatus(state, newMovie, false));
-          setInitialSaved((state) => state.filter((movie) => movie.movieId !== newMovie.movieId));
+          setSaved((state) => state.filter((movie) => movie.movieId !== newMovie.movieId));
         } else {
           //сохраняем фильм
           setCards((state) => changeCardStatus(state, newMovie, true));
           setInitialCards((state) => changeCardStatus(state, newMovie, true));
-          setInitialSaved((state) => [...state, { ...newMovie, saved: true }]);
+          setSaved((state) => [...state, { ...newMovie, saved: true }]);
           if (shortsOnly) {
-            setInitialSaved((state) => state.filter((movie) => movie.duration <= shortsDuration));
+            setSaved((state) => state.filter((movie) => movie.duration <= shortsDuration));
           }
         }
       })
@@ -283,6 +279,7 @@ function App() {
           };
         })
         setCards(data);
+        setSaved(data.filter((movie) => movie.saved === true));
         changeInitials();
       })
       .catch((err) => {
@@ -360,7 +357,7 @@ function App() {
 
             handleCheckbox={handleCheckbox}
             handleSearchMovie={handleSearchMovie}
-            cards={initialSaved}
+            cards={savedMovies}
             handleSave={handleSave}
 
             component={SavedPage}
