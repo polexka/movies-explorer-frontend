@@ -14,7 +14,7 @@ import { CurrentAuthContext } from '../../contexts/CurrentAuthContext';
 import { moviesApi } from '../../utils/MoviesApi';
 import { auth } from '../../utils/Auth';
 import { api } from '../../utils/MainApi';
-import { moviesUrl } from '../../utils/constants';
+import { mobileMoreCardsCount, moreCardsCount, moviesUrl, shortsDuration } from '../../utils/constants';
 import Search from '../../utils/Search';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
@@ -42,6 +42,7 @@ function App() {
       .then((res) => {
         setAuth(res);
         setLoginStatus(true);
+        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
       })
       .catch((err) => {
         err.then(({ message }) => {
@@ -49,10 +50,10 @@ function App() {
         })
         console.log(err);
         setLoginStatus(false);
+        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
       })
       .finally(() => {
         setLoading(false);
-        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
       })
   }, [loginStatus])
 
@@ -71,7 +72,8 @@ function App() {
 
   const [searchStr, setSearch] = useState('');
 
-  const [shortsOnly, setShortsOnly] = useState(false);
+  const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
+  const [shortsOnly, setShortsOnly] = useState(lastSearch.shortsOnly);
 
   const isTablet = useMediaQuery({
     query: "(max-width: 1045px)",
@@ -174,7 +176,7 @@ function App() {
 
   function changeInitials() {
     let cardsList = shortsOnly ?
-      [...cardsRef.current].filter((movie) => movie.duration <= 40) : [...cardsRef.current];
+      [...cardsRef.current].filter((movie) => movie.duration <= shortsDuration) : [...cardsRef.current];
 
     if (searchStr) {
       cardsList = Search(cardsList, searchStr);
@@ -201,22 +203,18 @@ function App() {
 
   function loadInitials() {
     let cardsList = shortsOnly ?
-      [...cardsRef.current].filter((movie) => movie.duration <= 40) : [...cardsRef.current];
+      [...cardsRef.current].filter((movie) => movie.duration <= shortsDuration) : [...cardsRef.current];
 
     if (isTablet || isMobile) {
-      setInitialCards(cardsList.slice(0, initialsRef.current.length + 2));
+      setInitialCards(cardsList.slice(0, initialsRef.current.length + mobileMoreCardsCount));
 
     } else {
-      setInitialCards(cardsList.slice(0, initialsRef.current.length + 3));
+      setInitialCards(cardsList.slice(0, initialsRef.current.length + moreCardsCount));
     }
 
     if (initialsRef.current.length + 1 >= cardsList.length) {
-      console.log('initialsRef.current.length: ' + initialsRef.current.length);
-      console.log('cardsList.length: ' + cardsList.length);
       setEnd(true);
     } else {
-      console.log('initialsRef.current.length: ' + initialsRef.current.length);
-      console.log('cardsList.length: ' + cardsList.length);
       setEnd(false);
     }
   }
@@ -241,7 +239,7 @@ function App() {
           setInitialCards((state) => changeCardStatus(state, newMovie, true));
           setInitialSaved((state) => [...state, { ...newMovie, saved: true }]);
           if (shortsOnly) {
-            setInitialSaved((state) => state.filter((movie) => movie.duration <= 40));
+            setInitialSaved((state) => state.filter((movie) => movie.duration <= shortsDuration));
           }
         }
       })
@@ -349,6 +347,7 @@ function App() {
             handleSave={handleSave}
             isEnd={endOfList}
             loadMore={loadInitials}
+            shortsOnly={shortsOnly}
 
             component={MoviesPage}
             mainSection={true}

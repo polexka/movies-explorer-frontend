@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import './SearchForm.css';
 import useForm from '../../hooks/useForm';
 
-function SearchForm({ handleCheckbox, handleSearchMovie }) {
-  const checked = localStorage.getItem('shorts');
-  const [value, setValue] = useState(checked === 'true' ? true : false);
+function SearchForm({ handleCheckbox, handleSearchMovie, shortsOnly }) {
+  const [value, setValue] = useState(shortsOnly);
   const form = useForm({ search: '' });
 
   function handleCheckboxChange() {
+    console.log(value);
     setValue(!value);
     handleCheckbox();
   }
@@ -39,6 +39,7 @@ function SearchForm({ handleCheckbox, handleSearchMovie }) {
             placeholder='Фильм'
             value={form.values.search}
             onChange={handleChange}
+            required
           />
           <button className='form__button' type="submit" />
         </div>

@@ -10,8 +10,6 @@ function MoviesCardList({
   savedPage
 }) {
 
-  const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
-
   return (
     <section className='cards'>
       {

@@ -1,5 +1,6 @@
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../Preloader/Preloader";
+import SavedDevider from "../SavedDevider/SavedDevider";
 import SearchForm from "../SearchForm/SearchForm";
 
 function MoviesPage({
@@ -10,6 +11,7 @@ function MoviesPage({
   handleSave,
   isEnd,
   loadMore,
+  shortsOnly
 }) {
   const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
 
@@ -18,6 +20,7 @@ function MoviesPage({
       <SearchForm
         handleCheckbox={handleCheckbox}
         handleSearchMovie={handleSearchMovie}
+        shortsOnly={shortsOnly}
         key='movies-search'
       />
       {
@@ -39,7 +42,7 @@ function MoviesPage({
             )
             :
             (
-              <></>
+              <SavedDevider />
             )
       }
     </>

@@ -17,9 +17,15 @@ function getNoun(number, word) {
   return word[2]
 }
 
+const mobileMoreCardsCount = 2;
+const moreCardsCount = 3;
+const shortsDuration = 40;
 
 module.exports = {
     moviesUrl,
     mainUrl,
-    getNoun
+    getNoun,
+    mobileMoreCardsCount,
+    moreCardsCount,
+    shortsDuration
 };
