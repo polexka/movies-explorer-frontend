@@ -8,7 +8,6 @@ function SearchForm({ handleCheckbox, handleSearchMovie }) {
   const form = useForm({ search: '' });
 
   function handleCheckboxChange() {
-    localStorage.setItem('shorts', !value);
     setValue(!value);
     handleCheckbox();
   }

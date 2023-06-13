@@ -3,7 +3,6 @@ import { Route, Redirect, Switch, withRouter, useHistory } from 'react-router-do
 import { useMediaQuery } from 'react-responsive';
 import { useState, useEffect, useRef } from 'react';
 
-import Main from '../Main/Main';
 import Profile from '../Profile/Profile';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
@@ -19,6 +18,15 @@ import { moviesUrl } from '../../utils/constants';
 import Search from '../../utils/Search';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
+import Header from '../Header/Header';
+import Promo from '../Promo/Promo';
+import NavTab from '../NavTab/NavTab';
+import AboutProject from '../AboutProject/AboutProject';
+import Techs from '../Techs/Techs';
+import AboutMe from '../AboutMe/AboutMe';
+import Portfolio from '../Portfolio/Portfolio';
+import SavedPage from '../SavedPage/SavedPage';
+import MoviesPage from '../MoviesPage/MoviesPage';
 
 function App() {
   const [currentAuth, setAuth] = useState({});
@@ -34,16 +42,17 @@ function App() {
       .then((res) => {
         setAuth(res);
         setLoginStatus(true);
-        // history.push('/movies');
       })
       .catch((err) => {
         err.then(({ message }) => {
-          // message: Необходима авторизация
+        console.log(message);
         })
+        console.log(err);
         setLoginStatus(false);
       })
       .finally(() => {
         setLoading(false);
+        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
       })
   }, [loginStatus])
 
@@ -62,9 +71,7 @@ function App() {
 
   const [searchStr, setSearch] = useState('');
 
-  const [shortsOnly, setShortsOnly] = useState(
-    (localStorage.getItem('shorts') === 'true') ? true : false
-  );
+  const [shortsOnly, setShortsOnly] = useState(false);
 
   const isTablet = useMediaQuery({
     query: "(max-width: 1045px)",
@@ -89,10 +96,20 @@ function App() {
   }
 
   function handleCheckbox() {
-    setShortsOnly((localStorage.getItem('shorts') === 'true') ? true : false);
+    console.log(localStorage.getItem('lastSearch'));
+    const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
+    lastSearch.shortsOnly = !(lastSearch.shortsOnly);
+    localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
+
+    setShortsOnly(lastSearch.shortsOnly);
   }
 
   function handleSearchMovie(search) {
+    console.log(localStorage.getItem('lastSearch'));
+    const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
+    lastSearch.searchStr = search;
+    localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
+
     setSearch(search);
   }
 
@@ -142,6 +159,11 @@ function App() {
         setAuth({});
         setLoginStatus(false);
         setErrMessage('');
+
+        // setCards([]);
+
+
+
         history.push('/');
         setConfirmWindow('Вы вышли из аккаунта');
       })
@@ -274,7 +296,6 @@ function App() {
   }, []);
 
   if (loading) {
-    // Отображаем индикатор загрузки или что-то другое во время ожидания ответа с сервера
     return <Preloader />;
   }
 
@@ -317,25 +338,49 @@ function App() {
             signOut={handleSignOut}
           />
 
+          <ProtectedRoute
+            path='/movies'
+            loggedIn={loginStatus}
+            cardsLoading={loading}
+
+            handleCheckbox={handleCheckbox}
+            handleSearchMovie={handleSearchMovie}
+            cards={initialCards}
+            handleSave={handleSave}
+            isEnd={endOfList}
+            loadMore={loadInitials}
+
+            component={MoviesPage}
+            mainSection={true}
+          />
+
+          <ProtectedRoute
+            path='/saved-movies'
+            loggedIn={loginStatus}
+            cardsLoading={loading}
+
+            handleCheckbox={handleCheckbox}
+            handleSearchMovie={handleSearchMovie}
+            cards={initialSaved}
+            handleSave={handleSave}
+
+            component={SavedPage}
+            mainSection={true}
+          />
+
+          <Route exact path='/'>
+            <Header loggedIn={loginStatus} />
+            <Promo />
+            <NavTab />
+            <AboutProject />
+            <Techs />
+            <AboutMe />
+            <Portfolio />
+          </Route>
+
           <Route path='/404'>
             <ErrorPage />
           </Route>
-
-          <ProtectedRoute
-            path='/'
-            loggedIn={loginStatus}
-            mainSection={true}
-
-            component={Main}
-            isEnd={endOfList}
-            handleCheckbox={handleCheckbox}
-            handleSearchMovie={handleSearchMovie}
-            initials={initialCards}
-            initialSaved={initialSaved}
-            handleSave={handleSave}
-            cardsLoading={loading}
-            loadMore={loadInitials}
-          />
 
         </Switch>
       </div>

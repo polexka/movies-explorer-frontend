@@ -14,7 +14,7 @@ const ProtectedRoute = ({ component: Component, loggedIn, mainSection, ...props 
             {mainSection ? (<Footer />) : (<></>)}
           </>
         ) :
-          <Redirect to="/signin" />
+          <Redirect to="/" />
       }
     </Route>
   );
