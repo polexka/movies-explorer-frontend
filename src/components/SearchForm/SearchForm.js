@@ -7,7 +7,6 @@ function SearchForm({ handleCheckbox, handleSearchMovie, shortsOnly }) {
   const form = useForm({ search: '' });
 
   function handleCheckboxChange() {
-    console.log(value);
     setValue(!value);
     handleCheckbox();
   }
