@@ -27,6 +27,7 @@ import AboutMe from '../AboutMe/AboutMe';
 import Portfolio from '../Portfolio/Portfolio';
 import SavedPage from '../SavedPage/SavedPage';
 import MoviesPage from '../MoviesPage/MoviesPage';
+import Footer from '../Footer/Footer';
 
 function App() {
   const [currentAuth, setAuth] = useState({});
@@ -36,30 +37,27 @@ function App() {
 
   const history = useHistory();
 
+  const [errMessage, setErrMessage] = useState('');
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [timerId, setTimerId] = useState({});
+
   useEffect(() => {
     setLoading(true);
     auth.authorization()
       .then((res) => {
         setAuth(res);
         setLoginStatus(true);
-        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
       })
       .catch((err) => {
         err.then(({ message }) => {
-        console.log(message);
+          setErrMessage(message);
         })
-        console.log(err);
         setLoginStatus(false);
-        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
       })
       .finally(() => {
         setLoading(false);
       })
   }, [loginStatus])
-
-  const [errMessage, setErrMessage] = useState('');
-  const [confirmMessage, setConfirmMessage] = useState('');
-  const [timerId, setTimerId] = useState({});
 
   const [cards, setCards] = useState([]);
   const cardsRef = useRef([]);
@@ -70,10 +68,11 @@ function App() {
 
   const [endOfList, setEnd] = useState(false);
 
-  const [searchStr, setSearch] = useState('');
-
   const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
+  const [searchStr, setSearch] = useState(lastSearch.searchStr);
   const [shortsOnly, setShortsOnly] = useState(lastSearch.shortsOnly);
+
+  const [searchResult, setResult] = useState([]);
 
   const isTablet = useMediaQuery({
     query: "(max-width: 1045px)",
@@ -98,33 +97,48 @@ function App() {
   }
 
   function handleCheckbox() {
-    console.log(localStorage.getItem('lastSearch'));
     const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
     lastSearch.shortsOnly = !(lastSearch.shortsOnly);
     localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
-
     setShortsOnly(lastSearch.shortsOnly);
+
+    if (lastSearch.shortsOnly) {
+      setResult(
+        Search(cards, searchStr).filter((movie) => movie.duration <= shortsDuration)
+      );
+    } else {
+      setResult(Search(cards, searchStr));
+    }
   }
 
   function handleSearchMovie(search) {
-    console.log(localStorage.getItem('lastSearch'));
     const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
     lastSearch.searchStr = search;
     localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
 
     setSearch(search);
+
+    if (lastSearch.shortsOnly) {
+      setResult(
+        Search(cards, search).filter((movie) => movie.duration <= shortsDuration)
+      );
+    } else {
+      setResult(Search(cards, search));
+    }
   }
 
   function handleSignInSubmit(data) {
     auth.signin(data)
       .then((res) => {
         setLoginStatus(true);
+        localStorage.setItem('loggedIn', true);
         setConfirmWindow('Успешный вход');
         setErrMessage('');
         history.push('/movies');
       })
       .catch((err) => {
         err.then(setErrWindow);
+        // localStorage.setItem('loggedIn', false);
         setLoginStatus(false);
       })
   }
@@ -133,12 +147,14 @@ function App() {
     auth.signup(data)
       .then((res) => {
         setLoginStatus(true);
+        localStorage.setItem('loggedIn', true);
         setErrMessage('');
         setConfirmWindow('Успешная регистрация');
         history.push('/movies');
       })
       .catch((err) => {
         err.then(setErrWindow);
+        localStorage.removeItem('loggedIn');
         setLoginStatus(false);
       })
   }
@@ -159,13 +175,12 @@ function App() {
     auth.signout()
       .then((res) => {
         setAuth({});
+        localStorage.removeItem('loggedIn');
+        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
         setLoginStatus(false);
         setErrMessage('');
-
-        // setCards([]);
-
-
-
+        setCards([]);
+        setSaved([]);
         history.push('/');
         setConfirmWindow('Вы вышли из аккаунта');
       })
@@ -175,22 +190,15 @@ function App() {
   }
 
   function changeInitials() {
-    let cardsList = shortsOnly ?
-      [...cardsRef.current].filter((movie) => movie.duration <= shortsDuration) : [...cardsRef.current];
-
-    if (searchStr) {
-      cardsList = Search(cardsList, searchStr);
-    }
-
     if (isMobile) {
-      setInitialCards(cardsList.slice(0, 5));
+      setInitialCards(searchResult.slice(0, 5));
     } else if (isTablet) {
-      setInitialCards(cardsList.slice(0, 8));
+      setInitialCards(searchResult.slice(0, 8));
     } else {
-      setInitialCards(cardsList.slice(0, 12));
+      setInitialCards(searchResult.slice(0, 12));
     }
 
-    if (initialsRef.current.length === cardsList.length) {
+    if (initialsRef.current.length === searchResult.length) {
       setEnd(true);
     } else {
       setEnd(false);
@@ -198,17 +206,14 @@ function App() {
   }
 
   function loadInitials() {
-    let cardsList = shortsOnly ?
-      [...cardsRef.current].filter((movie) => movie.duration <= shortsDuration) : [...cardsRef.current];
-
     if (isTablet || isMobile) {
-      setInitialCards(cardsList.slice(0, initialsRef.current.length + mobileMoreCardsCount));
+      setInitialCards(searchResult.slice(0, initialsRef.current.length + mobileMoreCardsCount));
 
     } else {
-      setInitialCards(cardsList.slice(0, initialsRef.current.length + moreCardsCount));
+      setInitialCards(searchResult.slice(0, initialsRef.current.length + moreCardsCount));
     }
 
-    if (initialsRef.current.length + 1 >= cardsList.length) {
+    if (initialsRef.current.length + 1 >= searchResult.length) {
       setEnd(true);
     } else {
       setEnd(false);
@@ -229,14 +234,13 @@ function App() {
           setCards((state) => changeCardStatus(state, newMovie, false));
           setInitialCards((state) => changeCardStatus(state, newMovie, false));
           setSaved((state) => state.filter((movie) => movie.movieId !== newMovie.movieId));
+          setResult((state) => changeCardStatus(state, newMovie, false));
         } else {
           //сохраняем фильм
           setCards((state) => changeCardStatus(state, newMovie, true));
           setInitialCards((state) => changeCardStatus(state, newMovie, true));
           setSaved((state) => [...state, { ...newMovie, saved: true }]);
-          if (shortsOnly) {
-            setSaved((state) => state.filter((movie) => movie.duration <= shortsDuration));
-          }
+          setResult((state) => changeCardStatus(state, newMovie, true));
         }
       })
       .catch((err) => {
@@ -279,6 +283,8 @@ function App() {
           };
         })
         setCards(data);
+        const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
+        setResult(Search(data, lastSearch.searchStr));
         setSaved(data.filter((movie) => movie.saved === true));
         changeInitials();
       })
@@ -288,7 +294,7 @@ function App() {
       .finally(() => {
         setLoading(false);
       })
-  }, []);
+  }, [loginStatus]);
 
   if (loading) {
     return <Preloader />;
@@ -325,7 +331,7 @@ function App() {
 
           <ProtectedRoute
             path='/profile'
-            loggedIn={loginStatus}
+            loggedIn={localStorage.getItem('loggedIn')}
             mainSection={false}
 
             component={Profile}
@@ -335,7 +341,7 @@ function App() {
 
           <ProtectedRoute
             path='/movies'
-            loggedIn={loginStatus}
+            loggedIn={localStorage.getItem('loggedIn')}
             cardsLoading={loading}
 
             handleCheckbox={handleCheckbox}
@@ -345,6 +351,7 @@ function App() {
             isEnd={endOfList}
             loadMore={loadInitials}
             shortsOnly={shortsOnly}
+            searchStr={searchStr}
 
             component={MoviesPage}
             mainSection={true}
@@ -352,7 +359,7 @@ function App() {
 
           <ProtectedRoute
             path='/saved-movies'
-            loggedIn={loginStatus}
+            loggedIn={localStorage.getItem('loggedIn')}
             cardsLoading={loading}
 
             handleCheckbox={handleCheckbox}
@@ -372,6 +379,7 @@ function App() {
             <Techs />
             <AboutMe />
             <Portfolio />
+            <Footer />
           </Route>
 
           <Route path='/404'>

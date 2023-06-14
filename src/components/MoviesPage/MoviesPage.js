@@ -11,7 +11,8 @@ function MoviesPage({
   handleSave,
   isEnd,
   loadMore,
-  shortsOnly
+  shortsOnly,
+  searchStr
 }) {
   const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
 
@@ -21,6 +22,7 @@ function MoviesPage({
         handleCheckbox={handleCheckbox}
         handleSearchMovie={handleSearchMovie}
         shortsOnly={shortsOnly}
+        searchStr={searchStr}
         key='movies-search'
       />
       {

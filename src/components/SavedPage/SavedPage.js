@@ -28,13 +28,24 @@ function SavedPage({
 
   function handleCheckbox() {
     setShortsOnly(!shortsOnly);
-    if (!shortsOnly) {
+    if (searchStr) {
+      if (!shortsOnly) {
       setVisibleFilms(
         Search(cards.filter((movie) => movie.duration <= shortsDuration), searchStr)
       )
     } else {
       setVisibleFilms(Search(cards, searchStr))
     }
+    } else {
+      if (!shortsOnly) {
+        setVisibleFilms(
+          cards.filter((movie) => movie.duration <= shortsDuration)
+        )
+      } else {
+        setVisibleFilms(cards)
+      }
+    }
+    
   }
 
   return (
@@ -43,6 +54,7 @@ function SavedPage({
         handleCheckbox={handleCheckbox}
         handleSearchMovie={handleSearchMovie}
         shortsOnly={shortsOnly}
+        searchStr={''}
         key='saved-movies-search'
       />
       {

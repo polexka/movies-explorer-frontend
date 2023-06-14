@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './SearchForm.css';
 import useForm from '../../hooks/useForm';
 
-function SearchForm({ handleCheckbox, handleSearchMovie, shortsOnly }) {
+function SearchForm({ handleCheckbox, handleSearchMovie, searchStr, shortsOnly }) {
   const [value, setValue] = useState(shortsOnly);
-  const form = useForm({ search: '' });
+  const form = useForm({ search: searchStr });
 
   function handleCheckboxChange() {
     setValue(!value);
@@ -19,10 +19,6 @@ function SearchForm({ handleCheckbox, handleSearchMovie, shortsOnly }) {
     e.preventDefault();
     handleSearchMovie(form.values.search);
   }
-
-  useEffect(() => {
-    localStorage.setItem('shorts', value);
-  }, [value])
 
   return (
     <section className='search'>
