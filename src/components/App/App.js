@@ -194,8 +194,8 @@ function App() {
         history.push('/');
 
         setConfirmMessage('Вы вышли из аккаунта');
-        setTimeout(() => { 
-          setConfirmMessage('') 
+        setTimeout(() => {
+          setConfirmMessage('')
         }, 2000);
       })
       .catch((err) => {
@@ -258,7 +258,12 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        if (err instanceof Promise) {
+          err.then(setErrWindow)
+        } else {
+          console.log(err.message);
+          setErrWindow(err.message);
+        }
       })
   }
 

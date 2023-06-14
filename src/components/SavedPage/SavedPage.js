@@ -45,8 +45,14 @@ function SavedPage({
         setVisibleFilms(cards)
       }
     }
-    
   }
+
+  useEffect(() => {
+    const updatedList = cards.filter(item => {
+      return visibleFilms.some(movie => movie.movieId === item.movieId)
+    })
+    setVisibleFilms(updatedList);
+  }, [cards])
 
   return (
     <>
