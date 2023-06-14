@@ -49,9 +49,12 @@ function App() {
         setLoginStatus(true);
       })
       .catch((err) => {
-        err.then(({ message }) => {
-          setErrMessage(message);
-        })
+        if (err instanceof Promise) {
+          err.then(err => setErrWindow(err.message))
+        } else {
+          console.log(err.message);
+          setErrWindow(err.message);
+        }
         setLoginStatus(false);
       })
       .finally(() => {
@@ -181,7 +184,6 @@ function App() {
       })
       .catch((err) => {
         err.then(setErrWindow);
-        console.log('lalla')
       })
   }
 
@@ -317,7 +319,7 @@ function App() {
         if (lastSearch.shortsOnly) {
           setResult(
             Search(cardsRef.current, lastSearch.searchStr)
-            .filter((movie) => movie.duration <= shortsDuration)
+              .filter((movie) => movie.duration <= shortsDuration)
           )
         } else {
           setResult(Search(cardsRef.current, lastSearch.searchStr));
