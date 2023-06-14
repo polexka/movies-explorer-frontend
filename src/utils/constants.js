@@ -17,6 +17,10 @@ function getNoun(number, word) {
   return word[2]
 }
 
+const mobileStartCount = 5;
+const tabletStartCount = 8;
+const startCount = 12;
+
 const mobileMoreCardsCount = 2;
 const moreCardsCount = 3;
 const shortsDuration = 40;
@@ -27,5 +31,8 @@ module.exports = {
     getNoun,
     mobileMoreCardsCount,
     moreCardsCount,
-    shortsDuration
+    shortsDuration,
+    mobileStartCount,
+    tabletStartCount,
+    startCount
 };

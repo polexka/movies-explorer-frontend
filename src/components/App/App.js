@@ -14,7 +14,7 @@ import { CurrentAuthContext } from '../../contexts/CurrentAuthContext';
 import { moviesApi } from '../../utils/MoviesApi';
 import { auth } from '../../utils/Auth';
 import { api } from '../../utils/MainApi';
-import { mobileMoreCardsCount, moreCardsCount, moviesUrl, shortsDuration } from '../../utils/constants';
+import { mobileMoreCardsCount, mobileStartCount, moreCardsCount, moviesUrl, shortsDuration, startCount, tabletStartCount } from '../../utils/constants';
 import Search from '../../utils/Search';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
@@ -39,7 +39,7 @@ function App() {
 
   const [errMessage, setErrMessage] = useState('');
   const [confirmMessage, setConfirmMessage] = useState('');
-  const [timerId, setTimerId] = useState({});
+  const [timerId, setTimerId] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -68,11 +68,11 @@ function App() {
 
   const [endOfList, setEnd] = useState(false);
 
-  const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
-  const [searchStr, setSearch] = useState(lastSearch.searchStr);
-  const [shortsOnly, setShortsOnly] = useState(lastSearch.shortsOnly);
+  const [searchStr, setSearch] = useState('');
+  const [shortsOnly, setShortsOnly] = useState(false);
 
   const [searchResult, setResult] = useState([]);
+  const searchRef = useRef([]);
 
   const isTablet = useMediaQuery({
     query: "(max-width: 1045px)",
@@ -84,15 +84,15 @@ function App() {
 
   function setErrWindow({ message }) {
     setErrMessage(message);
-    if (timerId) { clearTimeout(timerId) };
     const timer = setTimeout(() => { setErrMessage('') }, 2000);
+    clearTimeout(timerId);
     setTimerId(timer);
   }
 
   function setConfirmWindow(message) {
     setConfirmMessage(message);
-    if (timerId) { clearTimeout(timerId) };
     const timer = setTimeout(() => { setConfirmMessage('') }, 2000);
+    clearTimeout(timerId);
     setTimerId(timer);
   }
 
@@ -132,22 +132,32 @@ function App() {
       .then((res) => {
         setLoginStatus(true);
         localStorage.setItem('loggedIn', true);
+        const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
+        setSearch(lastSearch.searchStr);
+        setShortsOnly(lastSearch.shortsOnly);
         setConfirmWindow('Успешный вход');
         setErrMessage('');
         history.push('/movies');
       })
       .catch((err) => {
-        err.then(setErrWindow);
-        // localStorage.setItem('loggedIn', false);
+        if (err instanceof Promise) {
+          err.then(setErrWindow)
+        } else {
+          console.log(err.message);
+          setErrWindow(err.message);
+        }
         setLoginStatus(false);
       })
   }
 
   function handleSignUpSubmit(data) {
     auth.signup(data)
-      .then((res) => {
+      .then(() => {
         setLoginStatus(true);
         localStorage.setItem('loggedIn', true);
+        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
+        setSearch('');
+        setShortsOnly(false);
         setErrMessage('');
         setConfirmWindow('Успешная регистрация');
         history.push('/movies');
@@ -182,7 +192,11 @@ function App() {
         setCards([]);
         setSaved([]);
         history.push('/');
-        setConfirmWindow('Вы вышли из аккаунта');
+
+        setConfirmMessage('Вы вышли из аккаунта');
+        setTimeout(() => { 
+          setConfirmMessage('') 
+        }, 2000);
       })
       .catch((err) => {
         err.then(setErrWindow);
@@ -191,14 +205,14 @@ function App() {
 
   function changeInitials() {
     if (isMobile) {
-      setInitialCards(searchResult.slice(0, 5));
+      setInitialCards(searchRef.current.slice(0, mobileStartCount));
     } else if (isTablet) {
-      setInitialCards(searchResult.slice(0, 8));
+      setInitialCards(searchRef.current.slice(0, tabletStartCount));
     } else {
-      setInitialCards(searchResult.slice(0, 12));
+      setInitialCards(searchRef.current.slice(0, startCount));
     }
 
-    if (initialsRef.current.length === searchResult.length) {
+    if (initialsRef.current.length === searchRef.current.length) {
       setEnd(true);
     } else {
       setEnd(false);
@@ -213,7 +227,7 @@ function App() {
       setInitialCards(searchResult.slice(0, initialsRef.current.length + moreCardsCount));
     }
 
-    if (initialsRef.current.length + 1 >= searchResult.length) {
+    if (initialsRef.current.length >= searchResult.length) {
       setEnd(true);
     } else {
       setEnd(false);
@@ -257,6 +271,10 @@ function App() {
   }, [initialCards]);
 
   useEffect(() => {
+    searchRef.current = searchResult;
+  }, [searchResult])
+
+  useEffect(() => {
     changeInitials();
   }, [shortsOnly, searchStr]);
 
@@ -283,13 +301,27 @@ function App() {
           };
         })
         setCards(data);
+
         const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
-        setResult(Search(data, lastSearch.searchStr));
+        setSearch(lastSearch.searchStr);
+        setShortsOnly(lastSearch.shortsOnly);
+        if (lastSearch.shortsOnly) {
+          setResult(
+            Search(cardsRef.current, lastSearch.searchStr)
+          ).filter((movie) => movie.duration <= shortsDuration)
+        } else {
+          setResult(Search(cardsRef.current, lastSearch.searchStr));
+        }
         setSaved(data.filter((movie) => movie.saved === true));
         changeInitials();
       })
       .catch((err) => {
-        err.then(setErrWindow);
+        if (err instanceof Promise) {
+          err.then(err => setErrWindow(err.message))
+        } else {
+          console.log(err.message);
+          setErrWindow(err.message);
+        }
       })
       .finally(() => {
         setLoading(false);
