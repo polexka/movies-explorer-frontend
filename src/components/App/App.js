@@ -132,7 +132,9 @@ function App() {
       .then((res) => {
         setLoginStatus(true);
         localStorage.setItem('loggedIn', true);
+        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
         const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
+        console.log(lastSearch);
         setSearch(lastSearch.searchStr);
         setShortsOnly(lastSearch.shortsOnly);
         setConfirmWindow('Успешный вход');
@@ -315,7 +317,8 @@ function App() {
         if (lastSearch.shortsOnly) {
           setResult(
             Search(cardsRef.current, lastSearch.searchStr)
-          ).filter((movie) => movie.duration <= shortsDuration)
+            .filter((movie) => movie.duration <= shortsDuration)
+          )
         } else {
           setResult(Search(cardsRef.current, lastSearch.searchStr));
         }
@@ -334,6 +337,12 @@ function App() {
         setLoading(false);
       })
   }, [loginStatus]);
+
+  useEffect(() => {
+    if (!localStorage.getItem('lastSearch')) {
+      localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
+    }
+  }, [])
 
   if (loading) {
     return <Preloader />;
@@ -389,8 +398,8 @@ function App() {
             handleSave={handleSave}
             isEnd={endOfList}
             loadMore={loadInitials}
-            shortsOnly={shortsOnly}
-            searchStr={(JSON.parse(localStorage.getItem('lastSearch'))).searchStr}
+            shortsOnly={JSON.parse(localStorage.getItem('lastSearch')).shortsOnly}
+            searchStr={JSON.parse(localStorage.getItem('lastSearch')).searchStr}
 
             component={MoviesPage}
             mainSection={true}
