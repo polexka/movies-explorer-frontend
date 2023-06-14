@@ -14,7 +14,7 @@ import { CurrentAuthContext } from '../../contexts/CurrentAuthContext';
 import { moviesApi } from '../../utils/MoviesApi';
 import { auth } from '../../utils/Auth';
 import { api } from '../../utils/MainApi';
-import { mobileMoreCardsCount, mobileStartCount, moreCardsCount, moviesUrl, shortsDuration, startCount, tabletStartCount } from '../../utils/constants';
+import { messageTime, mobileMoreCardsCount, mobileStartCount, moreCardsCount, moviesUrl, shortsDuration, startCount, tabletStartCount } from '../../utils/constants';
 import Search from '../../utils/Search';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
@@ -84,14 +84,14 @@ function App() {
 
   function setErrWindow({ message }) {
     setErrMessage(message);
-    const timer = setTimeout(() => { setErrMessage('') }, 2000);
+    const timer = setTimeout(() => { setErrMessage('') }, messageTime);
     clearTimeout(timerId);
     setTimerId(timer);
   }
 
   function setConfirmWindow(message) {
     setConfirmMessage(message);
-    const timer = setTimeout(() => { setConfirmMessage('') }, 2000);
+    const timer = setTimeout(() => { setConfirmMessage('') }, messageTime);
     clearTimeout(timerId);
     setTimerId(timer);
   }
@@ -196,7 +196,7 @@ function App() {
         setConfirmMessage('Вы вышли из аккаунта');
         setTimeout(() => {
           setConfirmMessage('')
-        }, 2000);
+        }, messageTime);
       })
       .catch((err) => {
         err.then(setErrWindow);
@@ -388,7 +388,7 @@ function App() {
             isEnd={endOfList}
             loadMore={loadInitials}
             shortsOnly={shortsOnly}
-            searchStr={searchStr}
+            searchStr={(JSON.parse(localStorage.getItem('lastSearch'))).searchStr}
 
             component={MoviesPage}
             mainSection={true}

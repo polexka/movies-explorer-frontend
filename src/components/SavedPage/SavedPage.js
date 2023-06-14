@@ -30,12 +30,12 @@ function SavedPage({
     setShortsOnly(!shortsOnly);
     if (searchStr) {
       if (!shortsOnly) {
-      setVisibleFilms(
-        Search(cards.filter((movie) => movie.duration <= shortsDuration), searchStr)
-      )
-    } else {
-      setVisibleFilms(Search(cards, searchStr))
-    }
+        setVisibleFilms(
+          Search(cards.filter((movie) => movie.duration <= shortsDuration), searchStr)
+        )
+      } else {
+        setVisibleFilms(Search(cards, searchStr))
+      }
     } else {
       if (!shortsOnly) {
         setVisibleFilms(
@@ -48,10 +48,16 @@ function SavedPage({
   }
 
   useEffect(() => {
-    const updatedList = cards.filter(item => {
-      return visibleFilms.some(movie => movie.movieId === item.movieId)
-    })
-    setVisibleFilms(updatedList);
+    if (searchStr) {
+      setVisibleFilms(Search(cards, searchStr))
+    } else {
+      setVisibleFilms(cards);
+    }
+
+    if (shortsOnly) {
+      setVisibleFilms((state) => state.filter((movie) => movie.duration <= shortsDuration))
+    }
+
   }, [cards])
 
   return (

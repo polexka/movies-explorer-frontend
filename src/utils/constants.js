@@ -25,6 +25,8 @@ const mobileMoreCardsCount = 2;
 const moreCardsCount = 3;
 const shortsDuration = 40;
 
+const messageTime = 2000;
+
 module.exports = {
     moviesUrl,
     mainUrl,
@@ -34,5 +36,6 @@ module.exports = {
     shortsDuration,
     mobileStartCount,
     tabletStartCount,
-    startCount
+    startCount, 
+    messageTime
 };
