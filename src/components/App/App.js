@@ -175,9 +175,11 @@ function App() {
         setErrMessage('');
         setAuth(res);
         setConfirmWindow('Успешно обновлены данные');
+        console.log('lalla')
       })
       .catch((err) => {
         err.then(setErrWindow);
+        console.log('lalla')
       })
   }
 

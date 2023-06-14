@@ -83,7 +83,13 @@ function Profile({ patchUser, signOut }) {
               <button
                 className='button profile__button'
                 type='submit'
-                disabled={(validity.values.email && validity.values.name) ? false : true}
+                disabled={
+                  (
+                    validity.values.email && validity.values.name &&
+                    ((form.values.name != currentUser.name) || (form.values.email != currentUser.email))
+                  ) ?
+                    false : true
+                }
               >
                 Сохранить
               </button>
