@@ -1,6 +1,6 @@
 const moviesUrl = 'https://api.nomoreparties.co';
-// const mainUrl = 'https://api.diploma.nomoredomains.work';
-const mainUrl = 'http://localhost:5000';
+const mainUrl = 'https://api.diploma.nomoredomains.work';
+// const mainUrl = 'http://localhost:5000';
 
 function getNoun(number, word) {
   let n = number % 100;
