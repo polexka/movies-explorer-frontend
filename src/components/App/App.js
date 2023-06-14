@@ -398,8 +398,6 @@ function App() {
             handleSave={handleSave}
             isEnd={endOfList}
             loadMore={loadInitials}
-            shortsOnly={JSON.parse(localStorage.getItem('lastSearch')).shortsOnly}
-            searchStr={JSON.parse(localStorage.getItem('lastSearch')).searchStr}
 
             component={MoviesPage}
             mainSection={true}

@@ -11,18 +11,19 @@ function MoviesPage({
   handleSave,
   isEnd,
   loadMore,
-  shortsOnly,
-  searchStr
 }) {
+  if (!localStorage.getItem('lastSearch')) {
+    localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
+  }
   const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
-
+  
   return (
     <>
       <SearchForm
         handleCheckbox={handleCheckbox}
         handleSearchMovie={handleSearchMovie}
-        shortsOnly={shortsOnly}
-        searchStr={searchStr}
+        shortsOnly={lastSearch.shortsOnly}
+        searchStr={lastSearch.searchStr}
         key='movies-search'
       />
       {
