@@ -68,8 +68,7 @@ function App() {
   const [savedMovies, setSaved] = useState([]);
   const initialsRef = useRef([]);
 
-  const [endOfList, setEnd] = useState(false);
-  const endRef = useRef(false);
+  const [endOfList, setEnd] = useState(true);
 
   const [searchStr, setSearch] = useState('');
   const [shortsOnly, setShortsOnly] = useState(false);
@@ -120,11 +119,9 @@ function App() {
     setShortsOnly(lastSearch.shortsOnly);
     if (lastSearch.shortsOnly) {
       setResult(Search(cards, searchStr).filter((movie) => movie.duration <= shortsDuration));
-
     } else {
       setResult(Search(cards, searchStr));
     }
-    lastSearch.searchResult = searchRef.current;
     localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
   }
 
@@ -137,7 +134,6 @@ function App() {
     } else {
       setResult(Search(cards, search));
     }
-    lastSearch.searchResult = searchRef.current;
     localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
   }
 
@@ -161,7 +157,6 @@ function App() {
         if (err instanceof Promise) {
           err.then(setErrWindow)
         } else {
-          console.log(err.message);
           setErrWindow(err.message);
         }
         setLoginStatus(false);
@@ -197,7 +192,6 @@ function App() {
         setErrMessage('');
         setAuth(res);
         setConfirmWindow('Успешно обновлены данные');
-        console.log('lalla')
       })
       .catch((err) => {
         err.then(setErrWindow);
@@ -231,17 +225,17 @@ function App() {
   }
 
   function changeInitials() {
+    let initials = [];
     if (isMobile) {
-      setInitialCards(searchRef.current.slice(0, mobileStartCount));
+      initials = searchRef.current.slice(0, mobileStartCount);
     } else if (isTablet) {
-      setInitialCards(searchRef.current.slice(0, tabletStartCount));
+      initials = searchRef.current.slice(0, tabletStartCount);
     } else {
-      setInitialCards(searchRef.current.slice(0, startCount));
+      initials = searchRef.current.slice(0, startCount);
     }
-    const cardsCount = isMobile || isTablet ? mobileMoreCardsCount : moreCardsCount; 
-    console.log('initial length: ', initialsRef.current.length);
-    console.log('search length: ', searchRef.current.length);
-    if (initialsRef.current.length + cardsCount >= searchRef.current.length) {
+    setInitialCards(initials);
+    const cardsCount = isMobile || isTablet ? mobileMoreCardsCount : moreCardsCount;
+    if (initials.length + cardsCount >= searchRef.current.length) {
       setEnd(true);
     } else {
       setEnd(false);
@@ -251,13 +245,10 @@ function App() {
   function loadInitials() {
     if (isTablet || isMobile) {
       setInitialCards(searchResult.slice(0, initialsRef.current.length + mobileMoreCardsCount));
-
     } else {
       setInitialCards(searchResult.slice(0, initialsRef.current.length + moreCardsCount));
     }
     const cardsCount = isMobile || isTablet ? mobileMoreCardsCount : moreCardsCount;
-    console.log('initial length: ', initialsRef.current.length);
-    console.log('search length: ', searchRef.current.length); 
     if (initialsRef.current.length + cardsCount >= searchRef.current.length) {
       setEnd(true);
     } else {
@@ -292,7 +283,6 @@ function App() {
         if (err instanceof Promise) {
           err.then(setErrWindow)
         } else {
-          console.log(err.message);
           setErrWindow(err.message);
         }
       })
@@ -308,11 +298,10 @@ function App() {
 
   useEffect(() => {
     searchRef.current = searchResult;
+    const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
+    lastSearch.searchResult = searchRef.current;
+    localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
   }, [searchResult]);
-
-  useEffect(() => {
-    endRef.current = endOfList;
-  }, [endOfList])
 
   useEffect(() => {
     changeInitials();
@@ -352,14 +341,11 @@ function App() {
         } else {
           setResult(Search(cardsRef.current, lastSearch.searchStr));
         }
-        lastSearch.searchResult = searchRef.current;
-        localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
       })
       .catch((err) => {
         if (err instanceof Promise) {
           err.then(err => setErrWindow(err.message))
         } else {
-          console.log(err.message);
           setErrWindow(err.message);
         }
       })
@@ -420,7 +406,7 @@ function App() {
             handleSearchMovie={handleSearchMovie}
             cards={initialCards}
             handleSave={handleSave}
-            isEnd={endRef.current}
+            isEnd={endOfList}
             loadMore={loadInitials}
 
             component={MoviesPage}
