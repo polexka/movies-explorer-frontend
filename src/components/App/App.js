@@ -52,7 +52,6 @@ function App() {
         if (err instanceof Promise) {
           err.then(err => setErrWindow(err.message))
         } else {
-          console.log(err.message);
           setErrWindow(err.message);
         }
         setLoginStatus(false);
@@ -84,6 +83,12 @@ function App() {
   const isMobile = useMediaQuery({
     query: "(max-width: 694px)",
   });
+
+  useEffect(() => {
+    if (!localStorage.getItem('lastSearch')) {
+      localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
+    } 
+  }, [])
 
   function setErrWindow({ message }) {
     setErrMessage(message);
@@ -137,7 +142,6 @@ function App() {
         localStorage.setItem('loggedIn', true);
         localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
         const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
-        console.log(lastSearch);
         setSearch(lastSearch.searchStr);
         setShortsOnly(lastSearch.shortsOnly);
         setConfirmWindow('Успешный вход');
@@ -312,19 +316,23 @@ function App() {
           };
         })
         setCards(data);
+        setSaved(data.filter((movie) => movie.saved === true));
 
         const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
         setSearch(lastSearch.searchStr);
         setShortsOnly(lastSearch.shortsOnly);
+
         if (lastSearch.shortsOnly) {
           setResult(
             Search(cardsRef.current, lastSearch.searchStr)
               .filter((movie) => movie.duration <= shortsDuration)
           )
         } else {
-          setResult(Search(cardsRef.current, lastSearch.searchStr));
+          setResult(
+            Search(cardsRef.current, lastSearch.searchStr)
+          );
         }
-        setSaved(data.filter((movie) => movie.saved === true));
+
         changeInitials();
       })
       .catch((err) => {
@@ -339,12 +347,6 @@ function App() {
         setLoading(false);
       })
   }, [loginStatus]);
-
-  useEffect(() => {
-    if (!localStorage.getItem('lastSearch')) {
-      localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
-    }
-  }, [])
 
   if (loading) {
     return <Preloader />;
@@ -396,7 +398,7 @@ function App() {
 
             handleCheckbox={handleCheckbox}
             handleSearchMovie={handleSearchMovie}
-            cards={initialCards}
+            cards={initialsRef.current}
             handleSave={handleSave}
             isEnd={endOfList}
             loadMore={loadInitials}
@@ -433,6 +435,8 @@ function App() {
           <Route path='/404'>
             <ErrorPage />
           </Route>
+
+          <Route path="*" render={() => <Redirect to="/404" />} />
 
         </Switch>
       </div>
