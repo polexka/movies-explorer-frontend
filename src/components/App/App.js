@@ -86,8 +86,18 @@ function App() {
 
   useEffect(() => {
     if (!localStorage.getItem('lastSearch')) {
-      localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
-    } 
+      localStorage.setItem('lastSearch', JSON.stringify({
+        searchStr: '',
+        shortsOnly: false,
+        searchResult: []
+      }));
+    } else {
+      const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
+      setSearch(lastSearch.searchStr);
+      setShortsOnly(lastSearch.shortsOnly);
+      setSearch(lastSearch.searchResult);
+      console.log(lastSearch);
+    }
   }, [])
 
   function setErrWindow({ message }) {
@@ -107,46 +117,45 @@ function App() {
   function handleCheckbox() {
     const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
     lastSearch.shortsOnly = !(lastSearch.shortsOnly);
-    localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
     setShortsOnly(lastSearch.shortsOnly);
-
     if (lastSearch.shortsOnly) {
-      setResult(
-        Search(cards, searchStr).filter((movie) => movie.duration <= shortsDuration)
-      );
+      setResult(Search(cards, searchStr).filter((movie) => movie.duration <= shortsDuration));
+
     } else {
       setResult(Search(cards, searchStr));
     }
+    lastSearch.searchResult = searchRef.current;
+    localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
   }
 
   function handleSearchMovie(search) {
     const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
     lastSearch.searchStr = search;
-    localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
-
     setSearch(search);
-
     if (lastSearch.shortsOnly) {
-      setResult(
-        Search(cards, search).filter((movie) => movie.duration <= shortsDuration)
-      );
+      setResult(Search(cards, search).filter((movie) => movie.duration <= shortsDuration));
     } else {
       setResult(Search(cards, search));
     }
+    lastSearch.searchResult = searchRef.current;
+    localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
   }
 
   function handleSignInSubmit(data) {
     auth.signin(data)
       .then((res) => {
-        setLoginStatus(true);
         localStorage.setItem('loggedIn', true);
-        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
-        const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
-        setSearch(lastSearch.searchStr);
-        setShortsOnly(lastSearch.shortsOnly);
+        localStorage.setItem('lastSearch', JSON.stringify({
+          searchStr: '',
+          shortsOnly: false,
+          searchResult: []
+        }));
+        setSearch('');
+        setShortsOnly(false);
         setConfirmWindow('Успешный вход');
         setErrMessage('');
         history.push('/movies');
+        setLoginStatus(true);
       })
       .catch((err) => {
         if (err instanceof Promise) {
@@ -162,14 +171,18 @@ function App() {
   function handleSignUpSubmit(data) {
     auth.signup(data)
       .then(() => {
-        setLoginStatus(true);
         localStorage.setItem('loggedIn', true);
-        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
+        localStorage.setItem('lastSearch', JSON.stringify({
+          searchStr: '',
+          shortsOnly: false,
+          searchResult: []
+        }));
         setSearch('');
         setShortsOnly(false);
         setErrMessage('');
         setConfirmWindow('Успешная регистрация');
         history.push('/movies');
+        setLoginStatus(true);
       })
       .catch((err) => {
         err.then(setErrWindow);
@@ -196,7 +209,11 @@ function App() {
       .then((res) => {
         setAuth({});
         localStorage.removeItem('loggedIn');
-        localStorage.setItem('lastSearch', JSON.stringify({ searchStr: '', shortsOnly: false }));
+        localStorage.setItem('lastSearch', JSON.stringify({
+          searchStr: '',
+          shortsOnly: false,
+          searchResult: []
+        }));
         setLoginStatus(false);
         setErrMessage('');
         setCards([]);
@@ -291,7 +308,8 @@ function App() {
 
   useEffect(() => {
     changeInitials();
-  }, [shortsOnly, searchStr]);
+    console.log('useEffect searchStr');
+  }, [shortsOnly, searchStr, searchResult]);
 
   useEffect(() => {
     setLoading(true);
@@ -323,17 +341,12 @@ function App() {
         setShortsOnly(lastSearch.shortsOnly);
 
         if (lastSearch.shortsOnly) {
-          setResult(
-            Search(cardsRef.current, lastSearch.searchStr)
-              .filter((movie) => movie.duration <= shortsDuration)
-          )
+          setResult(Search(cardsRef.current, lastSearch.searchStr).filter((movie) => movie.duration <= shortsDuration));
         } else {
-          setResult(
-            Search(cardsRef.current, lastSearch.searchStr)
-          );
+          setResult(Search(cardsRef.current, lastSearch.searchStr));
         }
-
-        changeInitials();
+        lastSearch.searchResult = searchRef.current;
+        localStorage.setItem('lastSearch', JSON.stringify(lastSearch));
       })
       .catch((err) => {
         if (err instanceof Promise) {
@@ -398,7 +411,7 @@ function App() {
 
             handleCheckbox={handleCheckbox}
             handleSearchMovie={handleSearchMovie}
-            cards={initialsRef.current}
+            cards={initialCards}
             handleSave={handleSave}
             isEnd={endOfList}
             loadMore={loadInitials}
