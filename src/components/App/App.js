@@ -96,7 +96,6 @@ function App() {
       setSearch(lastSearch.searchStr);
       setShortsOnly(lastSearch.shortsOnly);
       setSearch(lastSearch.searchResult);
-      console.log(lastSearch);
     }
   }, [])
 
@@ -238,8 +237,8 @@ function App() {
     } else {
       setInitialCards(searchRef.current.slice(0, startCount));
     }
-
-    if (initialsRef.current.length === searchRef.current.length) {
+    const cardsCount = isMobile || isTablet ? mobileMoreCardsCount : moreCardsCount; 
+    if (initialsRef.current.length + cardsCount >= searchRef.current.length) {
       setEnd(true);
     } else {
       setEnd(false);
@@ -253,8 +252,8 @@ function App() {
     } else {
       setInitialCards(searchResult.slice(0, initialsRef.current.length + moreCardsCount));
     }
-
-    if (initialsRef.current.length >= searchResult.length) {
+    const cardsCount = isMobile || isTablet ? mobileMoreCardsCount : moreCardsCount; 
+    if (initialsRef.current.length + cardsCount >= searchResult.length) {
       setEnd(true);
     } else {
       setEnd(false);
@@ -308,7 +307,6 @@ function App() {
 
   useEffect(() => {
     changeInitials();
-    console.log('useEffect searchStr');
   }, [shortsOnly, searchStr, searchResult]);
 
   useEffect(() => {
