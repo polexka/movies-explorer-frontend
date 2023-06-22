@@ -69,6 +69,7 @@ function App() {
   const initialsRef = useRef([]);
 
   const [endOfList, setEnd] = useState(false);
+  const endRef = useRef(false);
 
   const [searchStr, setSearch] = useState('');
   const [shortsOnly, setShortsOnly] = useState(false);
@@ -238,6 +239,8 @@ function App() {
       setInitialCards(searchRef.current.slice(0, startCount));
     }
     const cardsCount = isMobile || isTablet ? mobileMoreCardsCount : moreCardsCount; 
+    console.log('initial length: ', initialsRef.current.length);
+    console.log('search length: ', searchRef.current.length);
     if (initialsRef.current.length + cardsCount >= searchRef.current.length) {
       setEnd(true);
     } else {
@@ -252,8 +255,10 @@ function App() {
     } else {
       setInitialCards(searchResult.slice(0, initialsRef.current.length + moreCardsCount));
     }
-    const cardsCount = isMobile || isTablet ? mobileMoreCardsCount : moreCardsCount; 
-    if (initialsRef.current.length + cardsCount >= searchResult.length) {
+    const cardsCount = isMobile || isTablet ? mobileMoreCardsCount : moreCardsCount;
+    console.log('initial length: ', initialsRef.current.length);
+    console.log('search length: ', searchRef.current.length); 
+    if (initialsRef.current.length + cardsCount >= searchRef.current.length) {
       setEnd(true);
     } else {
       setEnd(false);
@@ -303,7 +308,11 @@ function App() {
 
   useEffect(() => {
     searchRef.current = searchResult;
-  }, [searchResult])
+  }, [searchResult]);
+
+  useEffect(() => {
+    endRef.current = endOfList;
+  }, [endOfList])
 
   useEffect(() => {
     changeInitials();
@@ -411,7 +420,7 @@ function App() {
             handleSearchMovie={handleSearchMovie}
             cards={initialCards}
             handleSave={handleSave}
-            isEnd={endOfList}
+            isEnd={endRef.current}
             loadMore={loadInitials}
 
             component={MoviesPage}
