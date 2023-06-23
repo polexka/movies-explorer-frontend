@@ -3,7 +3,7 @@ import useValidation from '../../hooks/useValidation';
 import './Register.css';
 import { Link } from "react-router-dom";
 
-function Register(props) {
+function Register({ onSubmit }) {
   const form = useForm({
     name: '',
     email: '',
@@ -17,9 +17,10 @@ function Register(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.onSubmit({
+    onSubmit({
       email: form.values.email,
-      password: form.values.password
+      password: form.values.password,
+      name: form.values.name
     });
   }
 
@@ -84,7 +85,8 @@ function Register(props) {
 
         <button
           className='register__button'
-          type='button'
+          type='submit'
+          disabled={(validity.values.password && validity.values.email && validity.values.name) ? false : true}
         >
           Зарегистрироваться
         </button>

@@ -1,9 +1,14 @@
 import './More.css'
 
-function More() {
+function More({ loadMore }) {
   return (
     <div className='more'>
-      <button className='button more__button' type='button' />
+      <button
+        className='button 
+      more__button'
+        type='button'
+        onClick={loadMore}
+      />
     </div>
   );
 }

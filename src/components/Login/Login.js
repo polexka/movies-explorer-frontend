@@ -3,7 +3,7 @@ import useValidation from '../../hooks/useValidation';
 import './Login.css';
 import { Link } from "react-router-dom";
 
-function Login(props) {
+function Login({ onSubmit }) {
   const form = useForm({ email: '', password: '' });
   const validity = useValidation({
     email: false,
@@ -12,7 +12,7 @@ function Login(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.onSubmit({
+    onSubmit({
       email: form.values.email,
       password: form.values.password
     });
@@ -63,7 +63,8 @@ function Login(props) {
 
         <button
           className='login__button'
-          type='button'
+          type='submit'
+          disabled={(validity.values.password && validity.values.email) ? false : true}
         >
           Войти
         </button>

@@ -73,6 +73,11 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
+  transition: background-color 0.5s ease;
+}
+
+.login__button:disabled {
+  background-color: #cccccc;
 }
 
 .login__text {
